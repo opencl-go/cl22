@@ -27,7 +27,7 @@ func (event Event) String() string {
 // User events allow applications to enqueue commands that wait on a user event to finish before the command is
 // executed by the device.
 //
-// See also: https://registry.khronos.org/OpenCL/sdk/3.0/docs/man/html/clCreateUserEvent.html
+// See also: https://registry.khronos.org/OpenCL/sdk/2.2/docs/man/html/clCreateUserEvent.html
 func CreateUserEvent(context Context) (Event, error) {
 	var status C.cl_int
 	event := C.clCreateUserEvent(context.handle(), &status)
@@ -45,7 +45,7 @@ func CreateUserEvent(context Context) (Event, error) {
 //
 // The provided executionStatus can either be EventCommandCompleteStatus or a negative value to indicate an error.
 //
-// See also: https://registry.khronos.org/OpenCL/sdk/3.0/docs/man/html/clSetUserEventStatus.html
+// See also: https://registry.khronos.org/OpenCL/sdk/2.2/docs/man/html/clSetUserEventStatus.html
 func SetUserEventStatus(event Event, executionStatus int) error {
 	status := C.clSetUserEventStatus(event.handle(), C.cl_int(executionStatus))
 	if status != C.CL_SUCCESS {
@@ -56,7 +56,7 @@ func SetUserEventStatus(event Event, executionStatus int) error {
 
 // WaitForEvents waits on the host thread for commands identified by event objects to complete.
 //
-// See also: https://registry.khronos.org/OpenCL/sdk/3.0/docs/man/html/clWaitForEvents.html
+// See also: https://registry.khronos.org/OpenCL/sdk/2.2/docs/man/html/clWaitForEvents.html
 func WaitForEvents(events []Event) error {
 	var rawEvents unsafe.Pointer
 	if len(events) > 0 {
@@ -218,7 +218,7 @@ const (
 //
 // Raw strings are with a terminating NUL character.
 //
-// See also: https://registry.khronos.org/OpenCL/sdk/3.0/docs/man/html/clGetEventInfo.html
+// See also: https://registry.khronos.org/OpenCL/sdk/2.2/docs/man/html/clGetEventInfo.html
 func EventInfo(event Event, paramName EventInfoName, paramSize uint, paramValue unsafe.Pointer) (uint, error) {
 	sizeReturn := C.size_t(0)
 	status := C.clGetEventInfo(
@@ -236,7 +236,7 @@ func EventInfo(event Event, paramName EventInfoName, paramSize uint, paramValue 
 // RetainEvent increments the event reference count.
 // The OpenCL commands that return an event perform an implicit retain.
 //
-// See also: https://registry.khronos.org/OpenCL/sdk/3.0/docs/man/html/clRetainEvent.html
+// See also: https://registry.khronos.org/OpenCL/sdk/2.2/docs/man/html/clRetainEvent.html
 func RetainEvent(event Event) error {
 	status := C.clRetainEvent(event.handle())
 	if status != C.CL_SUCCESS {
@@ -247,7 +247,7 @@ func RetainEvent(event Event) error {
 
 // ReleaseEvent decrements the event reference count.
 //
-// See also: https://registry.khronos.org/OpenCL/sdk/3.0/docs/man/html/clReleaseEvent.html
+// See also: https://registry.khronos.org/OpenCL/sdk/2.2/docs/man/html/clReleaseEvent.html
 func ReleaseEvent(event Event) error {
 	status := C.clReleaseEvent(event.handle())
 	if status != C.CL_SUCCESS {
@@ -298,7 +298,7 @@ const (
 //
 // Raw strings are with a terminating NUL character.
 //
-// See also: https://registry.khronos.org/OpenCL/sdk/3.0/docs/man/html/clGetEventProfilingInfo.html
+// See also: https://registry.khronos.org/OpenCL/sdk/2.2/docs/man/html/clGetEventProfilingInfo.html
 func EventProfilingInfo(event Event, paramName EventProfilingInfoName, paramSize uint, paramValue unsafe.Pointer) (uint, error) {
 	sizeReturn := C.size_t(0)
 	status := C.clGetEventProfilingInfo(
@@ -321,7 +321,7 @@ func EventProfilingInfo(event Event, paramName EventProfilingInfoName, paramSize
 // The provided callback will receive an error in case execution failed, or nil if the requested execution status
 // has been reached.
 //
-// See also: https://registry.khronos.org/OpenCL/sdk/3.0/docs/man/html/clSetEventCallback.html
+// See also: https://registry.khronos.org/OpenCL/sdk/2.2/docs/man/html/clSetEventCallback.html
 func SetEventCallback(event Event, callbackType EventCommandExecutionStatus, callback func(error)) error {
 	callbackUserData, err := userDataFor(callback)
 	if err != nil {
@@ -351,16 +351,16 @@ func cl22GoEventCallback(_ Event, commandStatus C.cl_int, userData *C.uintptr_t)
 // or all previously enqueued commands to complete.
 //
 // Since: 1.2
-// See also: https://registry.khronos.org/OpenCL/sdk/3.0/docs/man/html/clEnqueueMarkerWithWaitList.html
-func EnqueueMarkerWithWaitList(commandQueue CommandQueue, events []Event, event *Event) error {
-	var rawEvents unsafe.Pointer
-	if len(events) > 0 {
-		rawEvents = unsafe.Pointer(&events[0])
+// See also: https://registry.khronos.org/OpenCL/sdk/2.2/docs/man/html/clEnqueueMarkerWithWaitList.html
+func EnqueueMarkerWithWaitList(commandQueue CommandQueue, waitList []Event, event *Event) error {
+	var rawWaitList unsafe.Pointer
+	if len(waitList) > 0 {
+		rawWaitList = unsafe.Pointer(&waitList[0])
 	}
 	status := C.clEnqueueMarkerWithWaitList(
 		commandQueue.handle(),
-		C.cl_uint(len(events)),
-		(*C.cl_event)(rawEvents),
+		C.cl_uint(len(waitList)),
+		(*C.cl_event)(rawWaitList),
 		(*C.cl_event)(unsafe.Pointer(event)))
 	if status != C.CL_SUCCESS {
 		return StatusError(status)
@@ -375,16 +375,16 @@ func EnqueueMarkerWithWaitList(commandQueue CommandQueue, events []Event, event 
 // execution, that is, any following commands enqueued after it do not execute until it completes.
 //
 // Since: 1.2
-// See also: https://registry.khronos.org/OpenCL/sdk/3.0/docs/man/html/clEnqueueBarrierWithWaitList.html
-func EnqueueBarrierWithWaitList(commandQueue CommandQueue, events []Event, event *Event) error {
-	var rawEvents unsafe.Pointer
-	if len(events) > 0 {
-		rawEvents = unsafe.Pointer(&events[0])
+// See also: https://registry.khronos.org/OpenCL/sdk/2.2/docs/man/html/clEnqueueBarrierWithWaitList.html
+func EnqueueBarrierWithWaitList(commandQueue CommandQueue, waitList []Event, event *Event) error {
+	var rawWaitList unsafe.Pointer
+	if len(waitList) > 0 {
+		rawWaitList = unsafe.Pointer(&waitList[0])
 	}
 	status := C.clEnqueueBarrierWithWaitList(
 		commandQueue.handle(),
-		C.cl_uint(len(events)),
-		(*C.cl_event)(rawEvents),
+		C.cl_uint(len(waitList)),
+		(*C.cl_event)(rawWaitList),
 		(*C.cl_event)(unsafe.Pointer(event)))
 	if status != C.CL_SUCCESS {
 		return StatusError(status)
