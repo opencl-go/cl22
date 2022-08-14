@@ -21,9 +21,6 @@ func (mem MemObject) String() string {
 	return fmt.Sprintf("0x%X", uintptr(mem))
 }
 
-// MemProperty is one entry of properties which are taken into account when creating memory objects.
-type MemProperty []uint64
-
 // RetainMemObject increments the memory object reference count.
 //
 // Function that create a memory object perform an implicit retain.
