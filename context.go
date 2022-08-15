@@ -93,7 +93,7 @@ func CreateContext(deviceIds []DeviceID, callback *ContextErrorCallback, propert
 	var status C.cl_int
 	context := C.cl22CreateContext(
 		(*C.cl_context_properties)(rawProperties),
-		C.uint(len(deviceIds)),
+		C.cl_uint(len(deviceIds)),
 		(*C.cl_device_id)(rawDeviceIds),
 		callbackKey,
 		&status)
@@ -256,7 +256,7 @@ const (
 	// Note: The reference count returned should be considered immediately stale. It is unsuitable for
 	// general use in applications. This feature is provided for identifying memory leaks.
 	//
-	// Returned type: Uint
+	// Returned type: uint32
 	ContextReferenceCountInfo ContextInfoName = C.CL_CONTEXT_REFERENCE_COUNT
 	// ContextDevicesInfo returns the list of devices and sub-devices in context.
 	//
@@ -264,7 +264,7 @@ const (
 	ContextDevicesInfo ContextInfoName = C.CL_CONTEXT_DEVICES
 	// ContextNumDevicesInfo returns the number of devices in context.
 	//
-	// Returned type: Uint
+	// Returned type: uint32
 	// Since: 1.1
 	ContextNumDevicesInfo ContextInfoName = C.CL_CONTEXT_NUM_DEVICES
 	// ContextPropertiesInfo returns the properties argument specified in CreateContext() or CreateContextFromType().
@@ -287,7 +287,7 @@ const (
 // Raw strings are with a terminating NUL character. For convenience, use ContextInfoString().
 //
 // See also: https://registry.khronos.org/OpenCL/sdk/2.2/docs/man/html/clGetContextInfo.html
-func ContextInfo(context Context, paramName ContextInfoName, paramSize uint, paramValue unsafe.Pointer) (uint, error) {
+func ContextInfo(context Context, paramName ContextInfoName, paramSize uintptr, paramValue unsafe.Pointer) (uintptr, error) {
 	sizeReturn := C.size_t(0)
 	status := C.clGetContextInfo(
 		context.handle(),
@@ -298,7 +298,7 @@ func ContextInfo(context Context, paramName ContextInfoName, paramSize uint, par
 	if status != C.CL_SUCCESS {
 		return 0, StatusError(status)
 	}
-	return uint(sizeReturn), nil
+	return uintptr(sizeReturn), nil
 }
 
 // ContextInfoString is a convenience method for ContextInfo() to query information values that are string-based.
@@ -306,7 +306,7 @@ func ContextInfo(context Context, paramName ContextInfoName, paramSize uint, par
 // This function does not verify the queried information is indeed of type string. It assumes the information is
 // a NUL terminated raw string and will extract the bytes as characters before that.
 func ContextInfoString(context Context, paramName ContextInfoName) (string, error) {
-	return queryString(func(paramSize uint, paramValue unsafe.Pointer) (uint, error) {
+	return queryString(func(paramSize uintptr, paramValue unsafe.Pointer) (uintptr, error) {
 		return ContextInfo(context, paramName, paramSize, paramValue)
 	})
 }

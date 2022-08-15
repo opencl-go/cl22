@@ -26,9 +26,3 @@ func BoolFrom(b bool) Bool {
 func (b Bool) ToGoBool() bool {
 	return b != False
 }
-
-// Uint represents an unsigned 32-bit integer in the OpenCL API.
-type Uint C.cl_uint
-
-// Ulong represents an unsigned 64-bit integer in the OpenCL API.
-type Ulong C.cl_ulong
