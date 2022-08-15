@@ -139,6 +139,12 @@ const (
 	//
 	// Returned type: Ulong
 	DeviceGlobalMemSizeInfo DeviceInfoName = C.CL_DEVICE_GLOBAL_MEM_SIZE
+	// DeviceHostUnifiedMemoryInfo is True if the device and the host have a unified memory subsystem and is
+	// False otherwise.
+	//
+	// Returned type: Bool
+	// Deprecated: 1.2
+	DeviceHostUnifiedMemoryInfo DeviceInfoName = C.CL_DEVICE_HOST_UNIFIED_MEMORY
 	// DeviceGlobalVariablePreferredTotalSizeInfo is the maximum preferred total size, in bytes, of all program variables
 	// in the global address space. This is a performance hint. An implementation may place such variables in storage
 	// with optimized device access. This query returns the capacity of such storage. The minimum value is 0.
@@ -613,6 +619,12 @@ const (
 	// Returned type: CommandQueuePropertiesFlags
 	// Since: 2.0
 	DeviceQueueOnHostPropertiesInfo DeviceInfoName = C.CL_DEVICE_QUEUE_ON_HOST_PROPERTIES
+	// DeviceQueuePropertiesInfo describes the command-queue properties supported by the device. This is a bit-field
+	// that describes one or more of the following values: QueueOutOfOrderExecModeEnable, QueueProfilingEnable.
+	//
+	// Returned type: CommandQueuePropertiesFlags
+	// Deprecated: 1.2; Use DeviceQueueOnHostPropertiesInfo instead.
+	DeviceQueuePropertiesInfo DeviceInfoName = C.CL_DEVICE_QUEUE_PROPERTIES
 	// DeviceReferenceCountInfo returns the device reference count. If the device is a root-level device,
 	// a reference count of one is returned.
 	//
