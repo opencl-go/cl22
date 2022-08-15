@@ -125,7 +125,7 @@ const (
 	DeviceExtensionsInfo DeviceInfoName = C.CL_DEVICE_EXTENSIONS
 	// DeviceGlobalMemCacheSizeInfo returns the size of global memory cache in bytes.
 	//
-	// Returned type: Ulong
+	// Returned type: uint64
 	DeviceGlobalMemCacheSizeInfo DeviceInfoName = C.CL_DEVICE_GLOBAL_MEM_CACHE_SIZE
 	// DeviceGlobalMemCacheTypeInfo represents the type of global memory cache supported.
 	//
@@ -137,7 +137,7 @@ const (
 	DeviceGlobalMemCachelineSizeInfo DeviceInfoName = C.CL_DEVICE_GLOBAL_MEM_CACHELINE_SIZE
 	// DeviceGlobalMemSizeInfo is the size of global device memory in bytes.
 	//
-	// Returned type: Ulong
+	// Returned type: uint64
 	DeviceGlobalMemSizeInfo DeviceInfoName = C.CL_DEVICE_GLOBAL_MEM_SIZE
 	// DeviceHostUnifiedMemoryInfo is True if the device and the host have a unified memory subsystem and is
 	// False otherwise.
@@ -233,7 +233,7 @@ const (
 	// DeviceLocalMemSizeInfo is the size of local memory region in bytes. The minimum value is 32 KB for devices
 	// that are not of type DeviceTypeCustom.
 	//
-	// Returned type: Ulong
+	// Returned type: uint64
 	DeviceLocalMemSizeInfo DeviceInfoName = C.CL_DEVICE_LOCAL_MEM_SIZE
 	// DeviceLocalMemTypeInfo is the type of local memory supported.
 	// This can be set to DeviceLocalMemTypeLocal implying dedicated local memory storage such as SRAM, or
@@ -266,7 +266,7 @@ const (
 	// DeviceMaxConstantBufferSizeInfo is the maximum size in bytes of a constant buffer allocation. The minimum value
 	// is 64 KB for devices that are not of type DeviceTypeCustom.
 	//
-	// Returned type: Ulong
+	// Returned type: uint64
 	DeviceMaxConstantBufferSizeInfo DeviceInfoName = C.CL_DEVICE_MAX_CONSTANT_BUFFER_SIZE
 	// DeviceMaxGlobalVariableSizeInfo is the maximum number of bytes of storage that may be allocated for any single
 	// variable in program scope or inside a function in an OpenCL kernel language declared in the global address space.
@@ -281,7 +281,7 @@ const (
 	// max(min(1024 * 1024 * 1024, 1/4th of DeviceGlobalMemSizeInfo), 32 * 1024 * 1024)
 	// for devices that are not of type DeviceTypeCustom.
 	//
-	// Returned type: Ulong
+	// Returned type: uint64
 	DeviceMaxMemAllocSizeInfo DeviceInfoName = C.CL_DEVICE_MAX_MEM_ALLOC_SIZE
 	// DeviceMaxNumSubGroupsInfo is the maximum number of subgroups in a work-group that a device is capable of executing
 	// on a single compute unit, for any given kernel-instance running on the device.
