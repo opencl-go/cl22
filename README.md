@@ -1,5 +1,11 @@
 # Go wrapper library for OpenCL 2.2
 
+[![Go version of Go module](https://img.shields.io/github/go-mod/go-version/opencl-go/cl22.svg)](https://github.com/opencl-go/cl22)
+[![GoDoc reference](https://img.shields.io/badge/godoc-reference-blue.svg)](https://pkg.go.dev/github.com/opencl-go/cl22)
+[![GoReportCard](https://goreportcard.com/badge/github.com/opencl-go/cl22)](https://goreportcard.com/report/github.com/opencl-go/cl22)
+[![License](https://img.shields.io/github/license/opencl-go/cl22.svg)](https://github.com/opencl-go/cl22/blob/main/LICENSE)
+[![OpenCL 2.2](https://img.shields.io/badge/OpenCL-2.2-green.svg)][opencl-api]
+
 This library provides a complete wrapper for the OpenCL 2.2 API.
 If you require a different API level, refer to [the opencl-go project][opencl-go] to see which versions are available.
 
